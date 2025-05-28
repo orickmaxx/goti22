@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GOTI 22 Popup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0a0a0a;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    canvas#stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+      max-width: 600px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      animation: chromaGlow 6s infinite;
+      margin: 10px;
+    }
+    @keyframes chromaGlow {
+      0% { border-color: #ff0000; box-shadow: 0 0 20px #ff0000; }
+      14% { border-color: #ff9900; box-shadow: 0 0 20px #ff9900; }
+      28% { border-color: #ffff00; box-shadow: 0 0 20px #ffff00; }
+      42% { border-color: #00ff00; box-shadow: 0 0 20px #00ff00; }
+      57% { border-color: #00ffff; box-shadow: 0 0 20px #00ffff; }
+      71% { border-color: #0000ff; box-shadow: 0 0 20px #0000ff; }
+      85% { border-color: #ff00ff; box-shadow: 0 0 20px #ff00ff; }
+      100% { border-color: #ff0000; box-shadow: 0 0 20px #ff0000; }
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 8px #ffffff;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    p {
+      font-size: 14px;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      margin: 10px;
+      background: transparent;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      color: #ffffff;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: chromaGlow 6s infinite;
+      text-decoration: none;
+    }
+    .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ffffff;
+    }
+    .button:active {
+      transform: scale(0.95);
+    }
+    .drag-button {
+      cursor: move;
+    }
+    .copy-button {
+      cursor: pointer;
+    }
+    .instructions {
+      font-size: 12px;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      p { font-size: 12px; }
+      .button { font-size: 12px; padding: 10px 20px; }
+      .container { padding: 15px; margin: 10px; }
+      .instructions { font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <div class="container">
+    <h1>GOTI 22 Popup</h1>
+    <p>Adicione um menu flutuante futurista às suas páginas com o GOTI 22! Com visual Chroma, botões dark, e scripts como SPeak, Khan Academy e Expansão Noturna, é perfeito para computador e celular.</p>
+    <a class="button drag-button" draggable="true" id="dragButton" href="javascript:fetch('https://raw.githubusercontent.com/orickmaxx/goti22/refs/heads/main/bookmarklet.js').then(t=>t.text()).then(eval);">Arrastar para Favoritos (PC)</a>
+    <button class="button copy-button" id="copyButton">Copiar Bookmarklet (Celular)</button>
+    <div class="instructions">
+      <h3>Instruções</h3>
+      <p><b>Computador (Chrome):</b> Arraste o botão "Arrastar para Favoritos" para a barra de favoritos. Clique no favorito em qualquer página para abrir o popup. Use <b>Shift direito</b> para ocultar/exibir.</p>
+      <p><b>Celular (Chrome Mobile):</b> Clique em "Copiar Bookmarklet", crie um favorito, e cole o código no campo URL. Toque no favorito para abrir o popup. <b>Nota:</b> Pode ser necessário usar o console remoto (veja suporte). Para melhor experiência, contate o suporte para a versão mobile.</p>
+      <p><b>Escolas:</b> Se o bookmarklet não funcionar, cole o código no console (Ctrl+Shift+I). Se as URLs forem bloqueadas, contate o suporte.</p>
+      <p><b>Suporte:</b> Veja o <a href="https://github.com/orickmaxx/goti22" style="color: #00ffff;">README</a> ou contate orickmaxx.</p>
+    </div>
+  </div>
+  <script>
+    // Estrelas animadas
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const stars = [];
+    for (let i = 0; i < 100; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5,
+        speed: Math.random() * 0.5 + 0.1
+      });
+    }
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        star.y += star.speed;
+        if (star.y > canvas.height) star.y = 0;
+      });
+      requestAnimationFrame(animateStars);
+    }
+    animateStars();
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // Bookmarklet
+    const bookmarklet = "javascript:fetch('https://raw.githubusercontent.com/orickmaxx/goti22/refs/heads/main/bookmarklet.js').then(t=>t.text()).then(eval);";
+
+    // Drag-and-Drop
+    const dragButton = document.getElementById('dragButton');
+    dragButton.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', bookmarklet);
+    });
+
+    // Copiar
+    const copyButton = document.getElementById('copyButton');
+    copyButton.addEventListener('click', () => {
+      navigator.clipboard.writeText(bookmarklet).then(() => {
+        alert('Bookmarklet copiado! Cole no campo URL de um favorito.');
+      }).catch(() => {
+        alert('Erro ao copiar. Copie manualmente: ' + bookmarklet);
+      });
+    });
+  </script>
+</body>
+</html>
