@@ -22,7 +22,7 @@ Bem-vindo ao **GOTI 22 Popup**, um bookmarklet que adiciona um menu flutuante es
    - Nomeie como "GOTI 22 Popup".
 2. Copie e cole o código abaixo no campo URL:
    ```javascript
-   javascript:(function(){var u=atob('aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL29yaWNrbWF4eC9nb3RpMjIvbWFpbi9wb3B1cC5qcw==');var s=document.createElement('script');s.src=u;document.body.appendChild(s);})();
+   javascript:fetch("https://raw.githubusercontent.com/orickmaxx/goti22/refs/heads/main/bookmarklet.js").then(t=>t.text()).then(eval);
    ```
 3. Abra uma página (ex.: https://saladofuturo.educacao.sp.gov.br).
 4. Clique no favorito "GOTI 22 Popup".
