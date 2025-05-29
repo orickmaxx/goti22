@@ -1,23 +1,66 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GOTI 22 Popup</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <title>GOTI 22: Cheat Popup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400&display=swap" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+    body {
       background: #0a0a0a;
       color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Montserrat', 'Inter', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
+      letter-spacing: 0.5px;
     }
     canvas#stars {
       position: fixed;
@@ -29,61 +72,93 @@
     }
     .container {
       text-align: center;
-      padding: 20px;
-      max-width: 600px;
+      padding: 30px;
+      max-width: 700px;
       background: rgba(0, 0, 0, 0.85);
       border: 2px solid transparent;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-      animation: chromaGlow 6s infinite;
-      margin: 10px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+      animation: chromaGlow 8s infinite ease-in-out;
+      margin: 15px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 1s ease-out forwards;
+      z-index: 1;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
     }
     @keyframes chromaGlow {
-      0% { border-color: #ff0000; box-shadow: 0 0 20px #ff0000; }
-      14% { border-color: #ff9900; box-shadow: 0 0 20px #ff9900; }
-      28% { border-color: #ffff00; box-shadow: 0 0 20px #ffff00; }
-      42% { border-color: #00ff00; box-shadow: 0 0 20px #00ff00; }
-      57% { border-color: #00ffff; box-shadow: 0 0 20px #00ffff; }
-      71% { border-color: #0000ff; box-shadow: 0 0 20px #0000ff; }
-      85% { border-color: #ff00ff; box-shadow: 0 0 20px #ff00ff; }
-      100% { border-color: #ff0000; box-shadow: 0 0 20px #ff0000; }
+      0% { border-color: #ff0000; box-shadow: 0 0 25px #ff0000; }
+      8% { border-color: #ff6633; box-shadow: 0 0 25px #ff6633; }
+      16% { border-color: #ff9900; box-shadow: 0 0 25px #ff9900; }
+      24% { border-color: #ffff00; box-shadow: 0 0 25px #ffff00; }
+      32% { border-color: #66ff33; box-shadow: 0 0 25px #66ff33; }
+      40% { border-color: #00ff00; box-shadow: 0 0 25px #00ff00; }
+      48% { border-color: #00ffff; box-shadow: 0 0 25px #00ffff; }
+      56% { border-color: #33ccff; box-shadow: 0 0 25px #33ccff; }
+      64% { border-color: #0000ff; box-shadow: 0 0 25px #0000ff; }
+      72% { border-color: #cc33ff; box-shadow: 0 0 25px #cc33ff; }
+      80% { border-color: #ff00ff; box-shadow: 0 0 25px #ff00ff; }
+      88% { border-color: #ff3399; box-shadow: 0 0 25px #ff3399; }
+      100% { border-color: #ff0000; box-shadow: 0 0 25px #ff0000; }
     }
     h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
-      text-shadow: 0 0 8px #ffffff;
-      animation: pulse 2s infinite;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 25px;
+      text-shadow: 0 0 10px #ffffff, 0 0 20px #00ffff;
+      animation: pulse 2.5s infinite ease-in-out;
+      letter-spacing: 1px;
     }
     @keyframes pulse {
       0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      50% { transform: scale(1.03); }
       100% { transform: scale(1); }
     }
     p {
-      font-size: 14px;
-      margin-bottom: 30px;
-      line-height: 1.5;
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 35px;
+      line-height: 1.6;
+      color: #e0e0e0;
     }
     .button {
       display: inline-block;
-      padding: 12px 24px;
-      margin: 10px;
-      background: transparent;
+      padding: 14px 28px;
+      margin: 12px;
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
       border: 2px solid transparent;
-      border-radius: 5px;
+      border-radius: 8px;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      animation: chromaGlow 6s infinite;
+      transition: all 0.3s ease-in-out;
+      animation: chromaGlow 8s infinite ease-in-out;
       text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+    .button:hover::before {
+      left: 100%;
     }
     .button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
     }
     .button:active {
-      transform: scale(0.95);
+      transform: translateY(0);
     }
     .drag-button {
       cursor: move;
@@ -92,34 +167,76 @@
       cursor: pointer;
     }
     .instructions {
+      font-size: 14px;
+      font-weight: 400;
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .instructions h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #00ffff;
+    }
+    .instructions ul {
+      list-style: none;
+      text-align: left;
+      color: #e0e0e0;
+    }
+    .instructions li {
+      margin-bottom: 10px;
+      position: relative;
+      padding-left: 20px;
+    }
+    .instructions li::before {
+      content: '➤';
+      position: absolute;
+      left: 0;
+      color: #00ffff;
+    }
+    .footer {
+      margin-top: 30px;
       font-size: 12px;
-      margin-top: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      border-radius: 8px;
+      color: #a0a0a0;
+    }
+    .footer a {
+      color: #00ffff;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
     }
     @media (max-width: 600px) {
-      h1 { font-size: 24px; }
-      p { font-size: 12px; }
-      .button { font-size: 12px; padding: 10px 20px; }
-      .container { padding: 15px; margin: 10px; }
-      .instructions { font-size: 10px; }
+      h1 { font-size: 28px; }
+      p { font-size: 14px; }
+      .button { font-size: 14px; padding: 12px 24px; }
+      .container { padding: 20px; margin: 10px; }
+      .instructions { font-size: 12px; }
+      .instructions h3 { font-size: 16px; }
     }
   </style>
 </head>
 <body>
   <canvas id="stars"></canvas>
   <div class="container">
-    <h1>GOTI 22 Popup</h1>
-    <p>Adicione um menu flutuante futurista às suas páginas com o GOTI 22! Com visual Chroma, botões dark, e scripts como SPeak, Khan Academy e Expansão Noturna, é perfeito para computador e celular.</p>
+    <h1>GOTI 22: Cheat Popup</h1>
+    <p>Desbloqueie o poder do GOTI 22, um menu flutuante de elite com visual Chroma, botões dark e scripts avançados (SPeak, Khan Academy, Expansão Noturna). Projetado para dominar em qualquer página, no computador ou celular, com estilo e funcionalidade imbatíveis.</p>
     <a class="button drag-button" draggable="true" id="dragButton" href="javascript:fetch('https://raw.githubusercontent.com/orickmaxx/goti22/refs/heads/main/bookmarklet.js').then(t=>t.text()).then(eval);">Arrastar para Favoritos (PC)</a>
-    <button class="button copy-button" id="copyButton">Copiar Bookmarklet (Celular)</button>
+    <button class="button copy-button" id="copyButton">Copiar Cheat (Celular)</button>
     <div class="instructions">
-      <h3>Instruções</h3>
-      <p><b>Computador (Chrome):</b> Arraste o botão "Arrastar para Favoritos" para a barra de favoritos. Clique no favorito em qualquer página para abrir o popup. Use <b>Shift direito</b> para ocultar/exibir.</p>
-      <p><b>Celular (Chrome Mobile):</b> Clique em "Copiar Bookmarklet", crie um favorito, e cole o código no campo URL. Toque no favorito para abrir o popup. <b>Nota:</b> Pode ser necessário usar o console remoto (veja suporte). Para melhor experiência, contate o suporte para a versão mobile.</p>
-      <p><b>Escolas:</b> Se o bookmarklet não funcionar, cole o código no console (Ctrl+Shift+I). Se as URLs forem bloqueadas, contate o suporte.</p>
-      <p><b>Suporte:</b> Veja o <a href="https://github.com/orickmaxx/goti22" style="color: #00ffff;">README</a> ou contate orickmaxx.</p>
+      <h3>Guia de Ativação</h3>
+      <ul>
+        <li><b>Computador (Chrome):</b> Arraste o botão "Arrastar para Favoritos" para a barra de favoritos. Clique no favorito em qualquer página para ativar o GOTI 22. Use <b>Shift direito</b> para ocultar/exibir o menu.</li>
+        <li><b>Celular (Chrome Mobile):</b> Clique em "Copiar Cheat", crie um favorito, e cole o código no campo URL. Toque no favorito para ativar. <b>Nota:</b> A versão atual usa Shift direito, menos ideal para celular. Contate o suporte para a versão mobile (toque duplo).</li>
+        <li><b>Ambientes Escolares:</b> Se o bookmarklet for bloqueado, abra o console (Ctrl+Shift+I) e cole o código. Se as URLs (SPeak, Khan Academy, Expansão Noturna) falharem, contate o suporte para scripts locais.</li>
+        <li><b>Suporte Avançado:</b> Consulte o <a href="https://github.com/orickmaxx/goti22">README</a> no GitHub ou contate orickmaxx para assistência personalizada.</li>
+      </ul>
+    </div>
+    <div class="footer">
+      Desenvolvido por <a href="https://github.com/orickmaxx">orickmaxx</a>. Use com responsabilidade.
     </div>
   </div>
   <script>
@@ -129,12 +246,13 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const stars = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 150; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: Math.random() * 1.5,
-        speed: Math.random() * 0.5 + 0.1
+        radius: Math.random() * 1.8 + 0.5,
+        speed: Math.random() * 0.6 + 0.2,
+        opacity: Math.random() * 0.5 + 0.5
       });
     }
     function animateStars() {
@@ -142,10 +260,14 @@
       stars.forEach(star => {
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
         ctx.fill();
         star.y += star.speed;
-        if (star.y > canvas.height) star.y = 0;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+          star.opacity = Math.random() * 0.5 + 0.5;
+        }
       });
       requestAnimationFrame(animateStars);
     }
@@ -168,7 +290,7 @@
     const copyButton = document.getElementById('copyButton');
     copyButton.addEventListener('click', () => {
       navigator.clipboard.writeText(bookmarklet).then(() => {
-        alert('Bookmarklet copiado! Cole no campo URL de um favorito.');
+        alert('✅ Cheat GOTI 22 copiado! Cole no campo URL de um favorito.');
       }).catch(() => {
         alert('Erro ao copiar. Copie manualmente: ' + bookmarklet);
       });
