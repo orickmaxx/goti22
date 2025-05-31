@@ -1,0 +1,150 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manutenção - GOTI 22</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2e2e2e);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(0, 255, 255, 0.2);
+            max-width: 600px;
+            border: 2px solid #00ffcc;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #cccccc;
+        }
+
+        .highlight {
+            color: #00ffcc;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #00ffcc;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px #00ffcc;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background: #1a1a1a;
+            color: #00ffcc;
+            box-shadow: 0 0 20px #00ffcc;
+            transform: scale(1.05);
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #999999;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(0, 255, 255, 0.2);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(0, 255, 255, 0.7), 0 0 60px rgba(0, 255, 255, 0.3);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Em Manutenção</h1>
+        <p>O <span class="highlight">GOTI 22</span> está passando por uma manutenção para trazer ainda mais <span class="highlight">poder</span> e <span class="highlight">estilo</span>! Nosso menu flutuante de elite com visual Chroma e funcionalidades avançadas estará de volta em breve, mais imbatível do que nunca.</p>
+        <p>Enquanto isso, confira nosso <a href="https://github.com/orickmaxx" class="highlight">GitHub</a> para mais informações ou entre em contato com <span class="highlight">orickmaxx</span> para suporte.</p>
+        <a href="https://github.com/orickmaxx" class="button">Visitar GitHub</a>
+        <div class="footer">Desenvolvido por <span class="highlight">orickmaxx</span>. Use com responsabilidade.</div>
+    </div>
+</body>
+</html>
