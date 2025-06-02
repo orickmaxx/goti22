@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GOTI 22 Premium Cheats</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #00ffff;
+      --bg-dark: #0a0a0a;
+      --text-light: #ffffff;
+      --text-muted: #e0e0e0;
+      --accent: #ff00ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    canvas#stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    header {
+      background: rgba(0, 0, 0, 0.9);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 {
+      font-size: 24px;
+      color: var(--primary-color);
+    }
+    nav a {
+      margin-left: 20px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: var(--primary-color);
+    }
+    .hero {
+      text-align: center;
+      padding: 80px 20px 40px;
+      animation: fadeIn 1s ease-out forwards;
+    }
+    .hero h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px var(--text-light), 0 0 20px var(--primary-color);
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+    .cta {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .button {
+      display: inline-block;
+      padding: 14px 28px;
+      margin: 12px;
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      border: 2px solid transparent;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      animation: chromaGlow 8s infinite ease-in-out;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+    .button:hover::before {
+      left: 100%;
+    }
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
+    }
+    .button:active {
+      transform: translateY(0);
+    }
+    .features {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .features h3 {
+      color: var(--primary-color);
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .features ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .features li {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: background 0.3s;
+    }
+    .features li:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    footer {
+      background: #000;
+      color: #aaa;
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 14px;
+      margin-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes chromaGlow {
+      0% { border-color: #ff0000; box-shadow: 0 0 25px #ff0000; }
+      8% { border-color: #ff6633; box-shadow: 0 0 25px #ff6633; }
+      16% { border-color: #ff9900; box-shadow: 0 0 25px #ff9900; }
+      24% { border-color: #ffff00; box-shadow: 0 0 25px #ffff00; }
+      32% { border-color: #66ff33; box-shadow: 0 0 25px #66ff33; }
+      40% { border-color: #00ff00; box-shadow: 0 0 25px #00ff00; }
+      48% { border-color: #00ffff; box-shadow: 0 0 25px #00ffff; }
+      56% { border-color: #33ccff; box-shadow: 0 0 25px #33ccff; }
+      64% { border-color: #0000ff; box-shadow: 0 0 25px #0000ff; }
+      72% { border-color: #cc33ff; box-shadow: 0 0 25px #cc33ff; }
+      80% { border-color: #ff00ff; box-shadow: 0 0 25px #ff00ff; }
+      88% { border-color: #ff3399; box-shadow: 0 0 25px #ff3399; }
+      100% { border-color: #ff0000; box-shadow: 0 0 25px #ff0000; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <header>
+    <h1>GOTI 22 Premium</h1>
+    <nav>
+      <a href="#">Início</a>
+      <a href="#features">Funcionalidades</a>
+      <a href="#compra">Comprar</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>O Cheat Escolar Mais Avançado do Brasil</h2>
+    <p>Scripts premium que burlam qualquer bloqueio. Design profissional, interface futurista e performance imbatível — tudo no seu navegador.</p>
+    <div class="cta">
+      <a href="https://checkout.seusite.com" class="button">Comprar Acesso Premium</a>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+    <h3>Funcionalidades Premium</h3>
+    <ul>
+      <li><i class="fa-solid fa-rocket"></i> Ativação Instantânea com um clique</li>
+      <li><i class="fa-solid fa-shield"></i> Modo invisível em sites escolares</li>
+      <li><i class="fa-solid fa-code"></i> Scripts compatíveis com Khan Academy, Google Forms e mais</li>
+      <li><i class="fa-solid fa-mobile"></i> Versão adaptada para celular</li>
+      <li><i class="fa-solid fa-headset"></i> Suporte personalizado via Discord</li>
+      <li><i class="fa-solid fa-lock"></i> Atualizações constantes e seguras</li>
+    </ul>
+  </section>
+
+  <footer>
+    Desenvolvido por <a href="https://github.com/orickmaxx">orickmaxx</a> | Use com responsabilidade.<br>
+    &copy; 2025 GOTI 22 Cheats Premium
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const stars = [];
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.8 + 0.5,
+        speed: Math.random() * 0.6 + 0.2,
+        opacity: Math.random() * 0.5 + 0.5
+      });
+    }
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        ctx.fill();
+        star.y += star.speed;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+          star.opacity = Math.random() * 0.5 + 0.5;
+        }
+      });
+      requestAnimationFrame(animateStars);
+    }
+    animateStars();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
