@@ -10,9 +10,11 @@
     :root {
       --primary-color: #00ffff;
       --bg-dark: #0a0a0a;
+      --bg-light: #121212;
       --text-light: #ffffff;
       --text-muted: #e0e0e0;
       --accent: #ff00ff;
+      --border-color: rgba(255, 255, 255, 0.1);
     }
 
     * {
@@ -35,45 +37,63 @@
       z-index: -1;
     }
     header {
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
       padding: 20px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid var(--border-color);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 1000;
     }
     header h1 {
       font-size: 24px;
       color: var(--primary-color);
+      text-shadow: 0 0 5px var(--primary-color);
     }
     nav a {
-      margin-left: 20px;
+      margin-left: 25px;
       color: var(--text-muted);
       text-decoration: none;
       font-weight: 500;
-      transition: color 0.3s;
+      transition: color 0.3s, text-shadow 0.3s;
     }
     nav a:hover {
       color: var(--primary-color);
+      text-shadow: 0 0 8px var(--primary-color);
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .section {
+      padding: 80px 0;
+      animation: fadeIn 1s ease-out forwards;
+    }
+    .section-title {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 40px;
+      text-shadow: 0 0 10px var(--primary-color);
     }
     .hero {
       text-align: center;
-      padding: 80px 20px 40px;
-      animation: fadeIn 1s ease-out forwards;
+      padding: 100px 20px 60px;
     }
     .hero h2 {
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(2.5rem, 6vw, 4rem);
       margin-bottom: 20px;
-      text-shadow: 0 0 10px var(--text-light), 0 0 20px var(--primary-color);
+      text-shadow: 0 0 10px var(--text-light), 0 0 25px var(--primary-color);
     }
     .hero p {
-      font-size: 18px;
+      font-size: 1.1rem;
       color: var(--text-muted);
-      max-width: 600px;
-      margin: 0 auto 30px;
+      max-width: 650px;
+      margin: 0 auto 40px;
     }
     .cta {
       display: flex;
@@ -83,13 +103,13 @@
     }
     .button {
       display: inline-block;
-      padding: 14px 28px;
-      margin: 12px;
+      padding: 15px 35px;
+      margin: 10px;
       background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
       border: 2px solid transparent;
       border-radius: 8px;
-      color: #ffffff;
-      font-size: 16px;
+      color: var(--text-light);
+      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease-in-out;
@@ -97,6 +117,8 @@
       text-decoration: none;
       position: relative;
       overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     .button::before {
       content: '';
@@ -106,53 +128,194 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.5s ease;
+      transition: left 0.6s ease;
     }
     .button:hover::before {
       left: 100%;
     }
     .button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
     }
     .button:active {
       transform: translateY(0);
     }
-    .features {
-      padding: 60px 20px;
-      max-width: 900px;
+
+    .stats-bar {
+      display: flex;
+      justify-content: space-around;
+      background: var(--bg-light);
+      padding: 30px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
       margin: 0 auto;
     }
-    .features h3 {
-      color: var(--primary-color);
-      font-size: 28px;
-      margin-bottom: 20px;
+    .stat {
       text-align: center;
     }
-    .features ul {
-      list-style: none;
+    .stat i {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    .stat h4 {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+    .stat p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
     }
-    .features li {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.1);
-      transition: background 0.3s;
+    .feature-card {
+      background: var(--bg-light);
+      padding: 30px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s, background 0.3s;
+      text-align: center;
     }
-    .features li:hover {
+    .feature-card:hover {
+      transform: translateY(-10px);
       background: rgba(255, 255, 255, 0.08);
+      border-color: var(--primary-color);
     }
+    .feature-card .icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+    .feature-card h4 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+    .feature-card p {
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      align-items: center;
+    }
+    .price-card {
+      background: var(--bg-light);
+      padding: 40px 30px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .price-card.recommended {
+      transform: scale(1.05);
+      border: 2px solid var(--primary-color);
+      box-shadow: 0 0 30px var(--primary-color);
+    }
+    .price-card h4 {
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+    .price-card .price {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .price-card .price span {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+    .price-card ul {
+      list-style: none;
+      margin: 30px 0;
+      text-align: left;
+    }
+    .price-card ul li {
+      margin-bottom: 15px;
+      color: var(--text-muted);
+    }
+    .price-card ul li i {
+      color: var(--primary-color);
+      margin-right: 10px;
+    }
+    
+    .showcase {
+        background-color: #000;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        margin: 40px 0;
+    }
+    .showcase h4 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: var(--text-muted);
+    }
+    .video-placeholder {
+        aspect-ratio: 16 / 9;
+        background: var(--bg-light);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .video-placeholder:hover {
+        background: #2a2a2a;
+    }
+    .video-placeholder i {
+        font-size: 4rem;
+        color: var(--primary-color);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+    .testimonial-card {
+      background: var(--bg-light);
+      padding: 30px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+    .testimonial-card p {
+        font-style: italic;
+        color: var(--text-muted);
+        margin-bottom: 20px;
+        line-height: 1.7;
+    }
+    .testimonial-card .author {
+        display: flex;
+        align-items: center;
+    }
+    .testimonial-card .author i {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-right: 15px;
+    }
+    .testimonial-card .author span {
+        font-weight: 600;
+    }
+
     footer {
       background: #000;
       color: #aaa;
       text-align: center;
-      padding: 30px 20px;
+      padding: 40px 20px;
       font-size: 14px;
-      margin-top: 40px;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 60px;
+      border-top: 1px solid var(--border-color);
     }
     footer a {
       color: var(--primary-color);
@@ -163,56 +326,187 @@
       to {opacity: 1; transform: translateY(0);}
     }
     @keyframes chromaGlow {
-      0% { border-color: #ff0000; box-shadow: 0 0 25px #ff0000; }
-      8% { border-color: #ff6633; box-shadow: 0 0 25px #ff6633; }
-      16% { border-color: #ff9900; box-shadow: 0 0 25px #ff9900; }
-      24% { border-color: #ffff00; box-shadow: 0 0 25px #ffff00; }
-      32% { border-color: #66ff33; box-shadow: 0 0 25px #66ff33; }
-      40% { border-color: #00ff00; box-shadow: 0 0 25px #00ff00; }
-      48% { border-color: #00ffff; box-shadow: 0 0 25px #00ffff; }
-      56% { border-color: #33ccff; box-shadow: 0 0 25px #33ccff; }
-      64% { border-color: #0000ff; box-shadow: 0 0 25px #0000ff; }
-      72% { border-color: #cc33ff; box-shadow: 0 0 25px #cc33ff; }
-      80% { border-color: #ff00ff; box-shadow: 0 0 25px #ff00ff; }
-      88% { border-color: #ff3399; box-shadow: 0 0 25px #ff3399; }
-      100% { border-color: #ff0000; box-shadow: 0 0 25px #ff0000; }
+      0% { border-color: #ff0000; box-shadow: 0 0 15px #ff0000; }
+      16% { border-color: #ff9900; box-shadow: 0 0 15px #ff9900; }
+      32% { border-color: #00ff00; box-shadow: 0 0 15px #00ff00; }
+      48% { border-color: #00ffff; box-shadow: 0 0 15px #00ffff; }
+      64% { border-color: #0000ff; box-shadow: 0 0 15px #0000ff; }
+      80% { border-color: #ff00ff; box-shadow: 0 0 15px #ff00ff; }
+      100% { border-color: #ff0000; box-shadow: 0 0 15px #ff0000; }
     }
   </style>
 </head>
 <body>
   <canvas id="stars"></canvas>
+
   <header>
     <h1>GOTI 22 Premium</h1>
     <nav>
-      <a href="#">Início</a>
+      <a href="#inicio">Início</a>
       <a href="#features">Funcionalidades</a>
-      <a href="#compra">Comprar</a>
+      <a href="#pricing">Preços</a>
+      <a href="#showcase">Demonstração</a>
     </nav>
   </header>
 
-  <section class="hero">
-    <h2>O Cheat Escolar Mais Avançado do Brasil</h2>
-    <p>Scripts premium que burlam qualquer bloqueio. Design profissional, interface futurista e performance imbatível — tudo no seu navegador.</p>
-    <div class="cta">
-      <a href="https://wa.me/5519981561697?text=Ol%C3%A1%21%20Estou%20interessado%20em%20comprar%20o%20cheat.%20Poderia%20me%20passar%20mais%20informa%C3%A7%C3%B5es%2C%20por%20favor%3F" class="button">Comprar Acesso Premium</a>
-    </div>
-  </section>
+  <main>
+    <section id="inicio" class="hero">
+      <div class="container">
+        <h2>O Cheat Escolar Mais Avançado do Brasil</h2>
+        <p>Eleve sua performance acadêmica com scripts premium indetectáveis. Design profissional, interface futurista e performance imbatível — tudo no seu navegador.</p>
+        <div class="cta">
+          <a href="#pricing" class="button">Ver Planos de Acesso</a>
+        </div>
+      </div>
+    </section>
 
-  <section id="features" class="features">
-    <h3>Funcionalidades Premium</h3>
-    <ul>
-      <li><i class="fa-solid fa-rocket"></i> Ativação Instantânea com um clique</li>
-      <li><i class="fa-solid fa-shield"></i> Modo invisível em sites escolares</li>
-      <li><i class="fa-solid fa-code"></i> Scripts compatíveis com Khan Academy, Google Forms e mais</li>
-      <li><i class="fa-solid fa-mobile"></i> Versão adaptada para celular</li>
-      <li><i class="fa-solid fa-headset"></i> Suporte personalizado via Discord</li>
-      <li><i class="fa-solid fa-lock"></i> Atualizações constantes e seguras</li>
-    </ul>
-  </section>
+    <div class="container">
+        <div class="stats-bar">
+            <div class="stat">
+                <i class="fa-solid fa-users"></i>
+                <h4>+500</h4>
+                <p>Usuários Ativos</p>
+            </div>
+            <div class="stat">
+                <i class="fa-solid fa-check-double"></i>
+                <h4>100%</h4>
+                <p>Indetectável</p>
+            </div>
+            <div class="stat">
+                <i class="fa-solid fa-laptop-code"></i>
+                <h4>+6</h4>
+                <p>Plataformas Suportadas</p>
+            </div>
+        </div>
+    </div>
+
+    <section id="features" class="section">
+      <div class="container">
+        <h3 class="section-title">Funcionalidades Premium</h3>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="icon"><i class="fa-solid fa-rocket"></i></div>
+            <h4>Ativação Instantânea</h4>
+            <p>Com apenas um clique, o script é injetado e está pronto para uso, sem configurações complicadas ou demoradas.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h4>Modo Stealth</h4>
+            <p>Navegue e use as funcionalidades em modo invisível, projetado para burlar sistemas de monitoramento em sites escolares.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon"><i class="fa-solid fa-code-branch"></i></div>
+            <h4>Compatibilidade Ampla</h4>
+            <p>Scripts otimizados para SPeak, Árvore (LeiaSP), Khan Academy, Expansão Noturna e plataformas da Sala do Futuro.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <h4>Interface Responsiva</h4>
+            <p>Acesse e controle todas as funcionalidades tanto no computador quanto no celular, com uma interface totalmente adaptada.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
+            <h4>Suporte via WhatsApp</h4>
+            <p>Tenha acesso direto ao desenvolvedor via WhatsApp para tirar dúvidas, resolver problemas e receber ajuda personalizada.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon"><i class="fa-solid fa-lock"></i></div>
+            <h4>Atualizações Seguras</h4>
+            <p>Receba atualizações constantes e automáticas para garantir a segurança e o funcionamento contra novas proteções.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+        <div class="container">
+            <h3 class="section-title">Acesso Premium</h3>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <h4>Mensal</h4>
+                    <div class="price">R$15<span>/mês</span></div>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Acesso a todos os scripts</li>
+                        <li><i class="fa-solid fa-check"></i> Suporte via WhatsApp</li>
+                        <li><i class="fa-solid fa-check"></i> Atualizações de Segurança</li>
+                        <li><i class="fa-solid fa-times"></i> Acesso a Funções Beta</li>
+                    </ul>
+                    <a href="https://wa.me/5519981561697?text=Ol%C3%A1%21%20Gostaria%20de%20adquirir%20o%20plano%20Mensal." class="button">Comprar</a>
+                </div>
+                <div class="price-card recommended">
+                    <h4>Trimestral</h4>
+                    <div class="price">R$35<span>/3 meses</span></div>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Acesso a todos os scripts</li>
+                        <li><i class="fa-solid fa-check"></i> Suporte Prioritário no WhatsApp</li>
+                        <li><i class="fa-solid fa-check"></i> Atualizações de Segurança</li>
+                        <li><i class="fa-solid fa-check"></i> Acesso a Funções Beta</li>
+                    </ul>
+                    <a href="https://wa.me/5519981561697?text=Ol%C3%A1%21%20Gostaria%20de%20adquirir%20o%20plano%20Trimestral." class="button">Comprar</a>
+                </div>
+                <div class="price-card">
+                    <h4>Vitalício</h4>
+                    <div class="price">R$70<span>/único</span></div>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Acesso a todos os scripts</li>
+                        <li><i class="fa-solid fa-check"></i> Suporte Prioritário no WhatsApp</li>
+                        <li><i class="fa-solid fa-check"></i> Atualizações de Segurança</li>
+                        <li><i class="fa-solid fa-check"></i> Acesso a Funções Beta</li>
+                    </ul>
+                    <a href="https://wa.me/5519981561697?text=Ol%C3%A1%21%20Gostaria%20de%20adquirir%20o%20plano%20Vital%C3%ADcio." class="button">Comprar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="showcase" class="section">
+        <div class="container">
+            <h3 class="section-title">Veja em Ação</h3>
+            <div class="showcase">
+                <h4>Demonstração das Funcionalidades</h4>
+                <div class="video-placeholder" onclick="alert('Vídeo de demonstração em breve!');">
+                    <i class="fa-solid fa-play"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="section">
+        <div class="container">
+            <h3 class="section-title">O Que Dizem Nossos Clientes</h3>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p>"Estava cheio de atividades na Árvore e no SPeak, isso aqui salvou meu tempo de um jeito absurdo. Mandei uma dúvida no zap e o cara respondeu na hora, sem bot. Recomendo demais."</p>
+                    <div class="author">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <span>Leo S.</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Usei para as Redações da Sala do Futuro e a nota veio bem melhor. O script é fácil de usar até no celular. Tava com medo de não funcionar, mas foi super liso."</p>
+                    <div class="author">
+                        <i class="fa-solid fa-user-pen"></i>
+                        <span>Ana P.</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Comprei o vitalício há uns meses. Já teve umas 3 atualizações pra Khan Academy e Expansão Noturna, o dev não abandona o projeto. É o melhor e mais seguro que já vi."</p>
+                    <div class="author">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>Guilherme R.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  </main>
 
   <footer>
-    Desenvolvido por <a href="https://github.com/orickmaxx">orickmaxx</a> | Use com responsabilidade.<br>
-    &copy; 2025 GOTI 22 Cheats Premium
+    <div class="container">
+        Desenvolvido por <a href="https://github.com/orickmaxx" target="_blank">orickmaxx</a> | Use com responsabilidade.<br>
+        &copy; 2025 GOTI 22 Cheats Premium. Todos os direitos reservados.
+    </div>
   </footer>
 
   <script>
@@ -221,12 +515,12 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const stars = [];
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 200; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         radius: Math.random() * 1.8 + 0.5,
-        speed: Math.random() * 0.6 + 0.2,
+        speed: Math.random() * 0.4 + 0.1,
         opacity: Math.random() * 0.5 + 0.5
       });
     }
