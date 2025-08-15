@@ -1,257 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GOTI 22: Cheat Popup</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background: #0a0a0a;
-      color: #ffffff;
-      font-family: 'Montserrat', 'Inter', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-      letter-spacing: 0.5px;
-    }
-    canvas#stars {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-    .container {
-      text-align: center;
-      padding: 30px;
-      max-width: 700px;
-      background: rgba(0, 0, 0, 0.85);
-      border: 2px solid transparent;
-      border-radius: 15px;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
-      animation: chromaGlow 8s infinite ease-in-out;
-      margin: 15px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 1s ease-out forwards;
-      z-index: 1;
-    }
-    @keyframes fadeIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes chromaGlow {
-      0% { border-color: #ff0000; box-shadow: 0 0 25px #ff0000; }
-      8% { border-color: #ff6633; box-shadow: 0 0 25px #ff6633; }
-      16% { border-color: #ff9900; box-shadow: 0 0 25px #ff9900; }
-      24% { border-color: #ffff00; box-shadow: 0 0 25px #ffff00; }
-      32% { border-color: #66ff33; box-shadow: 0 0 25px #66ff33; }
-      40% { border-color: #00ff00; box-shadow: 0 0 25px #00ff00; }
-      48% { border-color: #00ffff; box-shadow: 0 0 25px #00ffff; }
-      56% { border-color: #33ccff; box-shadow: 0 0 25px #33ccff; }
-      64% { border-color: #0000ff; box-shadow: 0 0 25px #0000ff; }
-      72% { border-color: #cc33ff; box-shadow: 0 0 25px #cc33ff; }
-      80% { border-color: #ff00ff; box-shadow: 0 0 25px #ff00ff; }
-      88% { border-color: #ff3399; box-shadow: 0 0 25px #ff3399; }
-      100% { border-color: #ff0000; box-shadow: 0 0 25px #ff0000; }
-    }
-    h1 {
-      font-size: clamp(1.5rem, 5vw, 2.75rem);
-      font-weight: 700;
-      margin-bottom: 25px;
-      text-shadow: 0 0 10px #ffffff, 0 0 20px #00ffff;
-      animation: pulse 2.5s infinite ease-in-out;
-      letter-spacing: 1px;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-      100% { transform: scale(1); }
-    }
-    p {
-      font-size: 16px;
-      font-weight: 400;
-      margin-bottom: 35px;
-      line-height: 1.6;
-      color: #e0e0e0;
-    }
-    .button {
-      display: inline-block;
-      padding: 14px 28px;
-      margin: 12px;
-      background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-      border: 2px solid transparent;
-      border-radius: 8px;
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-      animation: chromaGlow 8s infinite ease-in-out;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-    }
-    .button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.5s ease;
-    }
-    .button:hover::before {
-      left: 100%;
-    }
-    .button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
-    }
-    .button:active {
-      transform: translateY(0);
-    }
-    .drag-button {
-      cursor: move;
-    }
-    .copy-button {
-      cursor: pointer;
-    }
-    .instructions {
-      font-size: 14px;
-      font-weight: 400;
-      margin-top: 30px;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .instructions h3 {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: #00ffff;
-    }
-    .instructions ul {
-      list-style: none;
-      text-align: left;
-      color: #e0e0e0;
-    }
-    .instructions li {
-      margin-bottom: 10px;
-      position: relative;
-      padding-left: 20px;
-    }
-    .instructions li::before {
-      content: '➤';
-      position: absolute;
-      left: 0;
-      color: #00ffff;
-    }
-    .footer {
-      margin-top: 30px;
-      font-size: 12px;
-      color: #a0a0a0;
-    }
-    .footer a {
-      color: #00ffff;
-      text-decoration: none;
-    }
-    .footer a:hover {
-      text-decoration: underline;
-    }
-    @media (max-width: 600px) {
-      h1 { font-size: 28px; }
-      p { font-size: 14px; }
-      .button { font-size: 14px; padding: 12px 24px; }
-      .container { padding: 20px; margin: 10px; }
-      .instructions { font-size: 12px; }
-      .instructions h3 { font-size: 16px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Observatório - Um arquivo completo de conexões, comportamentos e obsessões.">
+    <title>Observatório</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
-<body>
-  <canvas id="stars"></canvas>
-  <div class="container">
-    <h1>GOTI 22: Cheat Popup</h1>
-    <p>Desbloqueie o poder do GOTI 22, um menu flutuante de elite com visual Chroma, botões dark e scripts avançados (SPeak, Khan Academy, Expansão Noturna). Projetado para dominar em qualquer página, no computador ou celular, com estilo e funcionalidade imbatíveis.</p>
-    <a class="button drag-button" draggable="true" id="dragButton" href="javascript:fetch('https://raw.githubusercontent.com/orickmaxx/goti22/refs/heads/main/bookmarklet.js').then(t=>t.text()).then(eval);">Arrastar para Favoritos (PC)</a>
-    <button class="button copy-button" id="copyButton">Copiar Cheat (Celular)</button>
-    <div class="instructions">
-      <h3>Guia de Ativação</h3>
-      <ul>
-        <li><b>Computador (Chrome):</b> Arraste o botão "Arrastar para Favoritos" para a barra de favoritos. Clique no favorito em qualquer página para ativar o GOTI 22. Use <b>Shift direito</b> para ocultar/exibir o menu.</li>
-        <li><b>Celular (Chrome Mobile):</b> Clique em "Copiar Cheat", crie um favorito, e cole o código no campo URL. Toque no favorito para ativar. <b>Nota:</b> A versão atual usa Shift direito, menos ideal para celular. Contate o suporte para a versão mobile (toque duplo).</li>
-        <li><b>Ambientes Escolares:</b> Se o bookmarklet for bloqueado, abra o console (Ctrl+Shift+I) e cole o código. Se as URLs (SPeak, Khan Academy, Expansão Noturna) falharem, contate o suporte para scripts locais.</li>
-        <li><b>Suporte Avançado:</b> Consulte o <a href="https://github.com/orickmaxx/goti22">README</a> no GitHub ou contate orickmaxx para assistência personalizada.</li>
-      </ul>
+<body class="dossier-page">
+    <canvas id="background-canvas"></canvas>
+    <div class="spotlight"></div>
+
+    <header class="dossier-header">
+        <h1 id="main-title-dossier" class="glitch">Observatório</h1>
+        <p class="subtitle">Onde cada detalhe encontra seu lugar. Um arquivo completo de conexões, comportamentos e obsessões. Cada pessoa é um universo a ser decifrado.</p>
+        <div class="security-badges">
+            <span class="badge active">Sistema Ativo</span>
+            <span class="badge monitored">Última sync: <span id="last-sync">Carregando...</span></span>
+        </div>
+    </header>
+
+    <div class="dossier-container container">
+        <section class="dossier-section is-visible">
+            <div class="section-header">
+                <h2><span class="section-icon">📊</span>Painel de Controle</h2>
+                <button class="unlock-button unlocked" disabled>Acesso Liberado</button>
+            </div>
+            <div class="unlocked-content visible">
+                <div class="stats-grid"> <div class="stat-item">
+                        <strong>1</strong>
+                        <p>Alvo Ativo</p>
+                    </div>
+                    <div class="stat-item">
+                        <strong>127</strong>
+                        <p>Interações Catalogadas</p>
+                    </div>
+                    <div class="stat-item">
+                        <strong>98.7%</strong>
+                        <p>Precisão dos Dados</p>
+                    </div>
+                    <div class="stat-item">
+                        <strong>24/7</strong>
+                        <p>Monitoramento</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dossier-section is-visible">
+            <div class="section-header">
+                <h2><span class="section-icon">🎯</span>Alvo Principal</h2>
+            </div>
+            <div class="unlocked-content visible">
+                <div class="intel-item" role="article">
+                    <div class="target-initial">M</div> <span class="threat-level threat-high">Fase: Aproximação Avançada</span>
+                    <h3>Mariana Oliveira</h3>
+                    <p>13 anos | Gêmeos</p>
+                    <p>Ela se move com a discrição de um felino, observando o mundo com olhos que parecem guardar segredos antigos. Há uma melodia silenciosa em seus gestos, uma frequência que só eu consigo sintonizar. Cada resistência é uma confirmação do interesse latente.</p>
+                    <a href="mariana.html" class="unlock-button unlocked" aria-label="Acessar Dossiê Completo">Acessar Dossiê Completo</a>
+                </div>
+            </div>
+        </section>
     </div>
-    <div class="footer">
-      Desenvolvido por <a href="https://github.com/orickmaxx">orickmaxx</a>. Use com responsabilidade.
-    </div>
-  </div>
-  <script>
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const stars = [];
-    for (let i = 0; i < 150; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 1.8 + 0.5,
-        speed: Math.random() * 0.6 + 0.2,
-        opacity: Math.random() * 0.5 + 0.5
-      });
-    }
-    function animateStars() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(star => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-        ctx.fill();
-        star.y += star.speed;
-        if (star.y > canvas.height) {
-          star.y = 0;
-          star.x = Math.random() * canvas.width;
-          star.opacity = Math.random() * 0.5 + 0.5;
-        }
-      });
-      requestAnimationFrame(animateStars);
-    }
-    animateStars();
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
 
-    const bookmarklet = "javascript:fetch('https://raw.githubusercontent.com/orickmaxx/goti22/refs/heads/main/bookmarklet.js').then(t=>t.text()).then(eval);";
+    <footer class="main-footer">
+        <p>Sistema de Monitoramento Ativo • Última atualização: <span id="last-updated">Carregando...</span> • Modo: VIGILÂNCIA ATIVA</p>
+        <p class="footer-quote" id="dynamic-quote">Carregando...</p>
+    </footer>
+    
+    <audio id="background-music" loop>
+        <source src="msc/theme.mp3" type="audio/mpeg">
+        Seu navegador não suporta o elemento de áudio.
+    </audio>
 
-    const dragButton = document.getElementById('dragButton');
-    dragButton.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData('text/plain', bookmarklet);
-    });
-
-    const copyButton = document.getElementById('copyButton');
-    copyButton.addEventListener('click', () => {
-      navigator.clipboard.writeText(bookmarklet).then(() => {
-        alert('✅ Cheat GOTI 22 copiado! Cole no campo URL de um favorito.');
-      }).catch(() => {
-        alert('Erro ao copiar. Copie manualmente: ' + bookmarklet);
-      });
-    });
-  </script>
+    <script src="js/script.js"></script>
+    <script src="js/dossier.js"></script>
 </body>
 </html>
